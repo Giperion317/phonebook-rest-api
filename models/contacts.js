@@ -43,18 +43,27 @@ const addContact = async (body) => {
 
 const updateContact = async (contactId, body) => {
   const contacts = await listContacts();
-  const [changedContact] = contacts.filter(({ id }) => id === contactId);
-
-  if (changedContact) {
-    const { name, email, phone } = body;
-    if (name) changedContact.name = name;
-    if (email) changedContact.email = email;
-    if (phone) changedContact.phone = phone;
-    const changedContactIndex = contacts.indexOf(changedContact);
-    contacts[changedContactIndex] = changedContact;
-    fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  const contactIdx = contacts.findIndex((contact) => contact.id === contactId);
+  if (contactIdx === -1) {
+    return null;
   }
-  return changedContact;
+  const { name, email, phone } = body;
+  const id = contactId;
+  contacts[contactIdx] = { id, name, email, phone };
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  return contacts[contactIdx];
+  // const [changedContact] = contacts.filter(({ id }) => id === contactId);
+
+  // if (changedContact) {
+  //   const { name, email, phone } = body;
+  //   if (name) changedContact.name = name;
+  //   if (email) changedContact.email = email;
+  //   if (phone) changedContact.phone = phone;
+  //   const changedContactIndex = contacts.indexOf(changedContact);
+  //   contacts[changedContactIndex] = changedContact;
+  //   fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  // }
+  // return changedContact;
 };
 
 module.exports = {
