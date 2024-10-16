@@ -1,6 +1,8 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
+const { handleSchemaValidationErrors } = require("../helpers");
+
 const contactSchema = new Schema(
   {
     name: {
@@ -20,6 +22,8 @@ const contactSchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
+
+contactSchema.post("save", handleSchemaValidationErrors);
 
 const addSchema = Joi.object({
   name: Joi.string().required(),
