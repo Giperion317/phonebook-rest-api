@@ -1,7 +1,7 @@
 const { Contact } = require("../../models/contact");
 
 const getContacts = async (req, res) => {
-  const result = await Contact.find({}, "name email phone");
+  const result = await Contact.find({}, "-createdAt -updatedAt");
   res.json(result);
 };
 

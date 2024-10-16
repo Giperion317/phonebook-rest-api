@@ -29,4 +29,11 @@ router.put(
   ctrlWrapper(ctrl.updateContact)
 );
 
+router.patch(
+  "/:contactId/favorite",
+  isValidId,
+  validationBody(schemas.updateFavoriteSchema),
+  ctrlWrapper(ctrl.updateFavorite)
+);
+
 module.exports = router;
